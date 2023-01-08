@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+}
+
+body { 
+    margin: 0;
+}
+
+header {
+    background-image: linear-gradient(to right, #6891E3 , blue);
+}
+
+header h1 {
+    color: white;
+    margin-top: 0;
+    text-align: center;
+}
+
+#current-weather {
+    border: 1px solid black;
+}
+
+button {
+    color: white;
+    background-color: #6891e3;
+    border: none;
+}

@@ -1,12 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Checker</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <title>Weather Checker</title>
 </head>
 <body>
-    
+  <header>
+    <h1>Weather Checker</h1>
+  </header>
+
+  <section id="city-search">
+    <form>
+      <h3>Search for a City:</h3>
+      <input id="city-input" type="text">
+      <button id="search-button">Search</button>
+    </form>
+    <ul id="search-history">
+    </ul>
+  </section>
+
+  <section id="current-weather">
+    <h3 id="city"></h3>
+    <p id="temp"></p>
+    <p id="wind"></p>
+    <p id="humidity"></p>
+  </section>
+
+  <section id="5-day-weather">
+    <h4>5-Day Forecast:</h4>
+  </section>
+
+  <script src="./assets/js/app.js"></script>
 </body>
 </html>
