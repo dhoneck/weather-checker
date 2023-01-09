@@ -5,6 +5,7 @@ var cityEl = document.getElementById('city');
 var tempEl = document.getElementById('temp');
 var windEl = document.getElementById('wind');
 var humidityEl = document.getElementById('humidity');
+var forecastEl = document.getElementById('forecast-container');
 
 var APIKey = 'c1d5715ddb2780f9e74e2c1c4120423b';
 
@@ -15,14 +16,11 @@ function getCoordinates(city) {
   var geocodingAPI = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=' + APIKey;
   fetch(geocodingAPI)
   .then(function (response) {
-    console.log(response);
     return response.json();
   })
   .then(function (data) {
-    console.log(data);
     var longitude = data[0]['lon'];
     var latitude = data[0]['lat'];
-    console.log('Longitude: ' + longitude + ' | Latitude: ' + latitude);
     
     displayCurrentWeather(longitude, latitude);
     displayForecastWeather(longitude, latitude);
@@ -31,15 +29,12 @@ function getCoordinates(city) {
 
 function displayCurrentWeather(lon, lat) {
   var queryURL = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=' + APIKey;
-  console.log(queryURL);
 
   fetch(queryURL)
   .then(function (response) {
-    console.log(response);
     return response.json();
   })
   .then(function (data) {
-    console.log(data);
 
     // Display weather icon
     var weatherIconCode = data['weather'][0]['icon'];
@@ -49,28 +44,53 @@ function displayCurrentWeather(lon, lat) {
     iconImage.src = weatherIconLink;
     iconImage.alt = iconDescription;
 
-    cityEl.innerHTML = data['name'] + ' ' + dateString;
+    cityEl.innerHTML = data['name'] + ' (' + dateString + ')';
     cityEl.append(iconImage);
-    tempEl.innerHTML = data['main']['temp'] + ' °F';
-    windEl.innerHTML = data['wind']['speed'] + ' MPH';
-    humidityEl.innerHTML = data['main']['humidity'] + ' %';
+    tempEl.innerHTML = 'Temp: ' + data['main']['temp'] + ' °F';
+    windEl.innerHTML = 'Wind: ' + data['wind']['speed'] + ' MPH';
+    humidityEl.innerHTML = 'Humidity: ' + data['main']['humidity'] + ' %';
   });
-  displayForecastWeather();
 }
 
 function displayForecastWeather(lon, lat) {
   var queryURL = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=' + APIKey;
-  console.log(queryURL);
 
   fetch(queryURL)
   .then(function (response) {
-    console.log(response);
     return response.json();
   })
   .then(function (data) {
-    console.log(data);
-  });
+    for (var x = 0; x < 5; x++) {
+      var weatherData = data['list'][(x * 8) + 5];
+      var weatherIconCode = weatherData['weather'][0]['icon'];
+      var weatherIconLink = 'http://openweathermap.org/img/w/' + weatherIconCode + '.png';
 
+      var forecast = document.createElement('div');
+      var date = document.createElement('p');
+      var icon = document.createElement('img');
+      var iconDescription = weatherData['weather'][0]['description'];
+      var temp = document.createElement('p');
+      var wind = document.createElement('p');
+      var humidity = document.createElement('p');
+      
+      // Set attributes and content
+      forecast.className = 'forecast-tile';
+      date.innerHTML = weatherData['dt_txt'];
+      icon.src = weatherIconLink;
+      icon.alt = iconDescription;
+      temp.innerHTML = 'Temp: ' + weatherData['main']['temp'] + ' °F';
+      wind.innerHTML = 'Wind: ' + weatherData['wind']['speed'] + ' MPH';
+      humidity.innerHTML = 'Humidity: ' + weatherData['main']['humidity'] + ' %';
+
+      // Add elements to tile and tile to HTML DOM
+      forecast.append(date);
+      forecast.append(icon);
+      forecast.append(temp);
+      forecast.append(wind);
+      forecast.append(humidity);
+      forecastEl.append(forecast);
+    }
+  });
 }
 
 // Event Listener

@@ -1,11 +1,15 @@
+/* General */
 * {
     box-sizing: border-box;
 }
 
-body { 
-    margin: 0;
+img {
+    height: 25px;
+    width: 25px;
+    vertical-align: bottom;
 }
 
+/* Header */
 header {
     background-image: linear-gradient(to right, #6891E3 , blue);
 }
@@ -16,12 +20,31 @@ header h1 {
     text-align: center;
 }
 
-#current-weather {
-    border: 1px solid black;
-}
-
+/* Search Styles */
 button {
     color: white;
     background-color: #6891e3;
     border: none;
+    border-radius: 3px;
+}
+
+button:hover {
+    opacity: .8;
+}
+
+
+/* Current Weather Styles */
+#current-weather {
+    border: 1px solid black;
+}
+
+/* Forecast Weather Styles */
+.forecast-tile {
+    color: white;
+    background-color: #323D4E;
+    display: inline-block;
+    width: 225px;
+    height: 225px;
+    padding: 10px;
+    margin: 10px 10px 10px 0;
 }
