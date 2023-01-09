@@ -1,6 +1,7 @@
 // Grab HTML Elements
 var searchButton = document.getElementById('search-button');
 var cityInput = document.getElementById('city-input');
+var searchHistory = document.getElementById('search-history');
 var cityEl = document.getElementById('city');
 var tempEl = document.getElementById('temp');
 var windEl = document.getElementById('wind');
@@ -11,6 +12,43 @@ var APIKey = 'c1d5715ddb2780f9e74e2c1c4120423b';
 
 const date = new Date();
 var dateString = date.toLocaleDateString();
+
+// Gets the cities from local storage
+function getCities() {
+  return window.localStorage.getItem('cities');
+}
+
+// Adds a city to local storages
+function setCity(city) {
+  var cities = getCities();
+  var parsedCities;
+  
+  if (cities) { // If local storage exists, parse data
+    parsedCities = JSON.parse(cities);
+  } else { // If local storage doesn't exist, create empty array to store data
+    parsedCities = [];  
+  }
+  
+  
+  if (!parsedCities.includes(city)) { // Add city to local storage if it is not in there
+    parsedCities.push(city);
+    window.localStorage.setItem('cities', JSON.stringify(parsedCities));
+  }
+}
+
+function displaySearchHistory() {
+  var cities = getCities();
+  var parsedCities;
+  if (cities) { // If local storage exists, parse data
+    parsedCities = JSON.parse(cities);
+    for (var x = 0; x < parsedCities.length; x++) {
+      var newCityHistory = document.createElement('button');
+      newCityHistory.textContent = parsedCities[x];
+      newCityHistory.classList = 'history-btn';
+      searchHistory.append(newCityHistory);
+    }
+  }
+}
 
 function getCoordinates(city) {
   var geocodingAPI = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=' + APIKey;
@@ -35,6 +73,8 @@ function displayCurrentWeather(lon, lat) {
     return response.json();
   })
   .then(function (data) {
+    var cityName = data['name'];
+    setCity(cityName);
 
     // Display weather icon
     var weatherIconCode = data['weather'][0]['icon'];
@@ -44,7 +84,7 @@ function displayCurrentWeather(lon, lat) {
     iconImage.src = weatherIconLink;
     iconImage.alt = iconDescription;
 
-    cityEl.innerHTML = data['name'] + ' (' + dateString + ')';
+    cityEl.innerHTML = cityName + ' (' + dateString + ')';
     cityEl.append(iconImage);
     tempEl.innerHTML = 'Temp: ' + data['main']['temp'] + ' °F';
     windEl.innerHTML = 'Wind: ' + data['wind']['speed'] + ' MPH';
@@ -60,6 +100,10 @@ function displayForecastWeather(lon, lat) {
     return response.json();
   })
   .then(function (data) {
+    // Clear forecast area;
+    forecastEl.innerHTML = '';
+
+    // Add 5-day forecast by grabbing weather at 12pm each day
     for (var x = 0; x < 5; x++) {
       var weatherData = data['list'][(x * 8) + 5];
       var weatherIconCode = weatherData['weather'][0]['icon'];
@@ -94,11 +138,26 @@ function displayForecastWeather(lon, lat) {
 }
 
 // Event Listener
+// Listen for form search button to be pressed
 searchButton.addEventListener('click', function(e) {
   e.preventDefault();
   
-  // Get user input
+  // Get city name from user input and attempt to display weather
   var city = cityInput.value;
-
   getCoordinates(city);
 });
+
+// Listen for a search history button to be pressed
+searchHistory.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  // Get city name from button and display weather
+  var element = e.target;
+  if (element.className.includes('history-btn')) {
+    var city = element.textContent;
+    getCoordinates(city);
+  }
+});
+
+// Display previously searched 
+displaySearchHistory();

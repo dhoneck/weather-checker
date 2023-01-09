@@ -21,9 +21,17 @@ header h1 {
 }
 
 /* Search Styles */
+#city-input, button, hr {
+    width: 25%;
+}
+
+#city-input, button {
+    height: 30px;
+}
+
 button {
-    color: white;
-    background-color: #6891e3;
+    display: block;
+    margin: 10px 0;
     border: none;
     border-radius: 3px;
 }
@@ -32,6 +40,15 @@ button:hover {
     opacity: .8;
 }
 
+#search-button {
+    color: white;
+    background-color: #6891e3;
+}
+
+.history-btn {
+    color: black;
+    background-color: lightgray;
+}
 
 /* Current Weather Styles */
 #current-weather {
