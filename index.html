@@ -12,29 +12,30 @@
     <h1>Weather Checker</h1>
   </header>
 
-  <section id="city-search">
-    <form>
-      <h3>Search for a City:</h3>
-      <input id="city-input" type="text">
-      <button id="search-button">Search</button>
-    </form>
-    <hr align="left">
-    <div id="search-history">
-    </div>
-  </section>
+  <main id="grid-container">
+    <section id="city-search">
+      <form>
+        <h3>Search for a City:</h3>
+        <input id="city-input" type="text">
+        <button id="search-button">Search</button>
+      </form>
+      <hr align="left">
+      <div id="search-history">
+      </div>
+    </section>
 
-  <section id="current-weather">
-    <h3 id="city"></h3>
-    <p id="temp"></p>
-    <p id="wind"></p>
-    <p id="humidity"></p>
-  </section>
+    <section id="current-weather">
+      <h3 id="city"></h3>
+      <p id="temp"></p>
+      <p id="wind"></p>
+      <p id="humidity"></p>
+    </section>
 
-  <section id="5-day-weather">
-    <h4>5-Day Forecast:</h4>
-    <div id="forecast-container"></div>
-  </section>
-
+    <section id="forecast-weather">
+      <h4>5-Day Forecast:</h4>
+      <div id="forecast-container"></div>
+    </section>
+  </main>
   <script src="./assets/js/app.js"></script>
 </body>
 </html>
