@@ -5,6 +5,7 @@
 
 body {
     margin: 0;
+    font-family: sans-serif;
 }
 
 img {
@@ -62,7 +63,7 @@ button:hover {
     opacity: .8;
 }
 
-#search-button {
+#search-button, #clear-button {
     color: white;
     background-color: #6891e3;
 }

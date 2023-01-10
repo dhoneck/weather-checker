@@ -40,6 +40,11 @@ function displaySearchHistory() {
   var parsedCities;
   searchHistory.innerHTML = '';
   if (cities) { // If local storage exists, parse data
+    var clearButton = document.createElement('button');
+    clearButton.textContent = 'Clear History';
+    clearButton.id = 'clear-button';
+    searchHistory.append(clearButton);
+
     parsedCities = JSON.parse(cities);
     for (var x = 0; x < parsedCities.length; x++) {
       var newCityHistory = document.createElement('button');
@@ -52,12 +57,17 @@ function displaySearchHistory() {
   }
 }
 
+// Removes city search history from local storage
+function clearHistory() {
+  window.localStorage.removeItem('cities');
+  displaySearchHistory();
+}
+
 function getWeather(city) {
   var geocodingAPI = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=' + API_KEY;
   
   fetch(geocodingAPI)
   .then(function (response) {
-    console.log(response);
     return response.json();
   })
   .then(function (data) {
@@ -163,11 +173,14 @@ searchButton.addEventListener('click', function(e) {
 searchHistory.addEventListener('click', function(e) {
   e.preventDefault();
 
-  // Get city name from button and display weather
+  
   var element = e.target;
-  if (element.className.includes('history-btn')) {
+  if (element.className.includes('history-btn')) { // Get city name from button and display weather
     var city = element.textContent;
     getWeather(city);
+  } else if (element.id == 'clear-button') { // Clear history from local storage
+    console.log('Clear search history')
+    clearHistory();
   }
 });
 
