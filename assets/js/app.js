@@ -71,6 +71,7 @@ function getWeather(city) {
     return response.json();
   })
   .then(function (data) {
+    cityInput.value = '';
     if (data[0]) {
       var foundCity = data[0]['name']; 
       var latitude = data[0]['lat'];
@@ -79,9 +80,12 @@ function getWeather(city) {
       displayCurrentWeather(longitude, latitude);
       displayForecastWeather(longitude, latitude);
       displaySearchHistory();
+      cityInput.placeholder = 'Enter a city';
     } else {
-      curre
+      cityInput.placeholder = 'Invalid city - try again';
     }
+    // Reset value
+    // cityInput.placeholder = 'Test';
   })
   .catch(function (error) {
     console.log('Error with city search. Please try again or revise search.');
