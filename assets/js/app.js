@@ -64,7 +64,7 @@ function clearHistory() {
 }
 
 function getWeather(city) {
-  var geocodingAPI = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=' + API_KEY;
+  var geocodingAPI = 'https://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=' + API_KEY;
   
   fetch(geocodingAPI)
   .then(function (response) {
@@ -104,7 +104,7 @@ function displayCurrentWeather(lon, lat) {
 
     // Display weather icon
     var weatherIconCode = data['weather'][0]['icon'];
-    var weatherIconLink = 'http://openweathermap.org/img/w/' + weatherIconCode + '.png';
+    var weatherIconLink = 'https://openweathermap.org/img/w/' + weatherIconCode + '.png';
     var iconDescription = data['weather'][0]['description'];
     var iconImage = document.createElement('img');
     iconImage.src = weatherIconLink;
@@ -119,7 +119,7 @@ function displayCurrentWeather(lon, lat) {
 }
 
 function displayForecastWeather(lon, lat) {
-  var queryURL = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=' + API_KEY;
+  var queryURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=' + API_KEY;
 
   fetch(queryURL)
   .then(function (response) {
@@ -128,12 +128,13 @@ function displayForecastWeather(lon, lat) {
   .then(function (data) {
     // Clear forecast area;
     forecastEl.innerHTML = '';
-
+    console.log('data');
+    console.log(data);
     // Add 5-day forecast by grabbing weather at 12pm each day
     for (var x = 0; x < 5; x++) {
-      var weatherData = data['list'][(x * 8) + 5];
+      var weatherData = data['list'][(x * 8)];
       var weatherIconCode = weatherData['weather'][0]['icon'];
-      var weatherIconLink = 'http://openweathermap.org/img/w/' + weatherIconCode + '.png';
+      var weatherIconLink = 'https://openweathermap.org/img/w/' + weatherIconCode + '.png';
 
       var forecast = document.createElement('div');
       var date = document.createElement('p');
@@ -145,7 +146,7 @@ function displayForecastWeather(lon, lat) {
       
       // Set attributes and content
       forecast.className = 'forecast-tile';
-      date.innerHTML = weatherData['dt_txt'];
+      date.innerHTML = weatherData['dt_txt'].split(' ')[0];
       icon.src = weatherIconLink;
       icon.alt = iconDescription;
       temp.innerHTML = 'Temp: ' + weatherData['main']['temp'] + ' °F';
